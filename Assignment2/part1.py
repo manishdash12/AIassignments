@@ -51,7 +51,7 @@ def plot(s1,s2,s3):
     plt.ylabel('samples (x)')
     plt.show()
 
-def main():
+if __name__ == "__main__":
     # We are given 3 values of sigma. We will run the algorithm for all three values
     # and plot the histograms
     samples1 = MetropolisHastings(0.05)
@@ -59,6 +59,3 @@ def main():
     samples3 = MetropolisHastings(50)
 
     plot(samples1,samples2,samples3)
-
-
-main()

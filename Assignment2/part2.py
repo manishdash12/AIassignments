@@ -1,13 +1,31 @@
 import numpy as np
 import math
 
+#lets define the robot environment
+env = [[1,2,3,4,-1,5,6,7,8,9,-1,10,11,12,-1,13],
+        [-1,-1,14,15,-1,16,-1,-1,17,-1,18,-1,19,-1,-1,-1],
+        [-1,20,21,22,-1,23,-1,-1,24,25,26,27,28,-1,-1,29],
+        [30,31,-1,32,33,34,-1,35,36,37,38,-1,39,40,41,42]]
 
-# the NEIGHBOUR table
-grid = [[],
-        [2],[1, 3],[2, 4, 14],[3,15],[6, 16],[5, 7],[6, 8],[7, 9, 17],[8],[11],[10,12,19],[11],[],
-        [3,15,21],[4,14,22],[5,23],[8,24],[26],[11,28],
-        [21,31],[14,20,22],[15,21,32],[16,34],[17,25,36],[24,26,37],[18,25,27,38],[26,28],[19,27,39],[42],
-        [31],[20,30],[22,33],[32,34],[23,33],[36],[24,35,37],[25,36,38],[26,37],[28,40],[39,41],[40,42],[29,31]]
+
+grid = []
+#funtion to calculate the Neighbors table
+def calculateNeighbors():
+    grid.append([])  #for state 0
+    for i in range(4):
+        for j in range(16):
+            if(env[i][j]!=-1):
+                temp =[]
+                if(i-1>=0 and env[i-1][j]!=-1):
+                    temp.append(env[i-1][j])
+                if(j-1>=0 and env[i][j-1]!=-1):
+                    temp.append(env[i][j-1])
+                if(j+1 < 16 and env[i][j+1]!=-1):
+                    temp.append(env[i][j+1])
+                if(i+1<4 and env[i+1][j]!=-1):
+                    temp.append(env[i+1][j])
+                grid.append(temp)
+
 
 num_states = 42
 #The transition matrix
@@ -131,16 +149,17 @@ def Viterbi(evidence):
 
     #Using the backtrack vector, compute the path recursively
     i = num_obs -1
-    path = np.zeros(shape=(1,num_obs))
+    path = [None]*num_obs
     while(i>=0):
-        path[0][i] = t_max
+        path[i] = t_max+1
         t_max = backtrack[t_max][i]
         i = i-1
 
     return path
 
+calculateNeighbors()
+calculateT()
 if  __name__ == "__main__":
-    calculateT()
 
     f = logicalFiltering([[1,1,0,1]])
 
